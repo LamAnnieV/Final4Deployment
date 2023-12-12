@@ -29,7 +29,7 @@ if (builder.Environment.IsDevelopment() || builder.Environment.EnvironmentName =
 else{
     // Configure SQL Server (prod)
     var credential = new ChainedTokenCredential(new AzureDeveloperCliCredential(), new DefaultAzureCredential());
-    builder.Configuration.AddAzureKeyVault(new Uri(builder.Configuration["AZURE_KEY_VAULT_ENDPOINT"] ?? ""), credential);
+    builder.Configuration.AddAzureKeyVault(new Uri(builder.Configuration["AZURE_KEY_VAULT_ENDPOINT"] ?? "https://kura-final-keyvault.vault.azure.net/"), credential);
     builder.Services.AddDbContext<CatalogContext>(c =>
     {
         var connectionString = builder.Configuration[builder.Configuration["AZURE_SQL_CATALOG_CONNECTION_STRING_KEY"] ?? "https://kura-final-keyvault.vault.azure.net/"];

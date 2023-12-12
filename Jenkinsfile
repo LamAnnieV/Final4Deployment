@@ -36,6 +36,10 @@ pipeline {
                             string(credentialsId: 'AWS_SECRET_KEY', variable: 'AWS_SECRET_ACCESS_KEY')
                         ]) {
                             sh "aws eks --region us-west-1 update-kubeconfig --name cluster02"
+                            sh "kubectl delete pods --all"
+                            sh "akubectl delete deployments --all"
+                            sh "kubectl delete services --all"
+                            sh "kubectl delete ingress --all"
                             sh "kubectl apply -f deployment.yaml && kubectl apply -f service.yaml && kubectl apply -f ingress.yaml"
                         }
                     }

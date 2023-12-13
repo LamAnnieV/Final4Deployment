@@ -13,9 +13,10 @@ WORKDIR /app
 
 # Install necessary tools and dependencies
 RUN apt-get update \
-    && apt-get install -y curl gnupg \
+    && apt-get install -y curl gnupg software-properties-common \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
+
 
 # Install Azure CLI
 RUN curl -sL https://aka.ms/InstallAzureCLIDeb | bash

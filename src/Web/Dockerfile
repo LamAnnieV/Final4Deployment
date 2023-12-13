@@ -43,10 +43,4 @@ FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS runtime
 WORKDIR /app
 COPY --from=build /app/src/Web/out ./
 
-# Install PowerShell
-RUN apt-get update \
-    && apt-get install -y powershell \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
-
 ENTRYPOINT ["dotnet", "Web.dll"]

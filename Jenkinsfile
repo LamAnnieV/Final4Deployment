@@ -39,7 +39,7 @@ pipeline {
                             sh "kubectl delete deployments --all"
                             sh "kubectl delete services --all"
                             sh "kubectl delete ingress --all"
-                            sh "aws eks --region us-west-1 update-kubeconfig --name cluster02"
+                            sh "aws eks --region us-west-1 update-kubeconfig --name cluster01"
                             sh "kubectl apply -f deployment.yaml && kubectl apply -f service.yaml && kubectl apply -f ingress.yaml"
                         }
                     }

@@ -34,7 +34,9 @@ RUN apt-get update \
     && apt-get install -y powershell \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
-
+    
+# Switch to a base image that includes PowerShell
+FROM mcr.microsoft.com/powershell:latest AS powershell
 # Set environment variables for Azure CLI
 ENV AZURE_CLIENT_ID=<your-client-id>
 ENV AZURE_TENANT_ID=<your-tenant-id>

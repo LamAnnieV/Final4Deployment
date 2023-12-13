@@ -10,6 +10,15 @@
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /app
 
+# Install necessary tools and dependencies
+RUN apt-get update \
+    && apt-get install -y curl gnupg \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install Azure CLI
+RUN curl -sL https://aka.ms/InstallAzureCLIDeb | bash
+
 COPY *.sln .
 COPY . .
 WORKDIR /app/src/Web
@@ -20,8 +29,21 @@ RUN dotnet publish -c Release -o out
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS runtime
 WORKDIR /app
 COPY --from=build /app/src/Web/out ./
+# Install PowerShell
+RUN apt-get update \
+    && apt-get install -y powershell \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 
-# Optional: Set this here if not setting it from docker-compose.yml
+# Set environment variables for Azure CLI
+ENV AZURE_CLIENT_ID=<your-client-id>
+ENV AZURE_TENANT_ID=<your-tenant-id>
+ENV AZURE_CLIENT_SECRET=<your-client-secret>
+
+# Optionally, set ASP.NET Core environment
 # ENV ASPNETCORE_ENVIRONMENT Development
+
+# Optional: set ASP.NET Core environment if not setting it from docker-compose.yml
+ENV ASPNETCORE_ENVIRONMENT Development
 
 ENTRYPOINT ["dotnet", "Web.dll"]

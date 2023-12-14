@@ -1,30 +1,82 @@
 ---
-apiVersion: networking.k8s.io/v1
-kind: Ingress
+apiVersion: apps/v1
+kind: Deployment
 metadata:
-  name: eshop-ingress
-  annotations:
-    alb.ingress.kubernetes.io/scheme: internet-facing
-    alb.ingress.kubernetes.io/target-type: instance
-    alb.ingress.kubernetes.io/tags: Project=Final-ingress
+  name: eshopwebmvc-deployment
 spec:
-  ingressClassName: alb
-  rules:
-    - http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: eshopwebmvc-service
-                port:
-                  number: 80
-    - http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: eshoppublicapi-service
-                port:
-                  number: 443
+  replicas: 2
+  selector:
+    matchLabels:
+      app: eshopwebmvc
+  template:
+    metadata:
+      labels:
+        app: eshopwebmvc
+    spec:
+      containers:
+      - name: eshopwebmvc
+        image: dannydee93/eshopwebmvc:latest
+        ports:
+        - name: http
+          containerPort: 80  
+        resources:
+          limits:
+            cpu: "500m"
+            memory: "512Mi"
+          requests:
+            cpu: "250m"
+            memory: "256Mi"
+        readinessProbe:
+          httpGet:
+            path: /
+            port: http
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: eshoppublicapi-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: eshoppublicapi
+  template:
+    metadata:
+      labels:
+        app: eshoppublicapi
+    spec:
+      containers:
+      - name: eshoppublicapi
+        image: dannydee93/eshoppublicapi:latest
+        ports:
+        - name: https
+          containerPort: 443
+        readinessProbe:
+          httpGet:
+            path: /
+            port: https
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sqlserver-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sqlserver
+  template:
+    metadata:
+      labels:
+        app: sqlserver
+    spec:
+      containers:
+      - name: sqlserver
+        image: mcr.microsoft.com/azure-sql-edge
+        ports:
+        - containerPort: 1433
+        env:
+        - name: SA_PASSWORD
+          value: "@someThingComplicated1234"
+        - name: ACCEPT_EULA
+          value: "Y"

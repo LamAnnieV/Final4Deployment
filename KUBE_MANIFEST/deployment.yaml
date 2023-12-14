@@ -56,7 +56,6 @@ spec:
             path: /
             port: https
 ---
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -81,4 +80,4 @@ spec:
           value: "@someThingComplicated1234"
         - name: ACCEPT_EULA
           value: "Y"
-          
+---

@@ -27,6 +27,4 @@ spec:
               service:
                 name: eshoppublicapi-service
                 port:
-                  number: 80
-
-
+                  number: 443

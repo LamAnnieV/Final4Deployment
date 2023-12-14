@@ -1,3 +1,4 @@
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -25,9 +26,11 @@ spec:
           requests:
             cpu: "250m"
             memory: "256Mi"
-
+        readinessProbe:
+          httpGet:
+            path: /
+            port: http
 ---
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -48,7 +51,10 @@ spec:
         ports:
         - name: https
           containerPort: 443
-
+        readinessProbe:
+          httpGet:
+            path: /
+            port: https
 ---
 
 apiVersion: apps/v1
@@ -75,3 +81,4 @@ spec:
           value: "@someThingComplicated1234"
         - name: ACCEPT_EULA
           value: "Y"
+          

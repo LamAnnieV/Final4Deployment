@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: eshopwebmvc-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: eshopwebmvc
+  template:
+    metadata:
+      labels:
+        app: eshopwebmvc
+    spec:
+      containers:
+      - name: eshopwebmvc
+        image: dannydee93/eshopwebmvc:latest
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: eshopwebmvc-service
+spec:
+  selector:
+    app: eshopwebmvc
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+---

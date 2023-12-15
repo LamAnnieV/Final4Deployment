@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: eshoppublicapi-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: eshoppublicapi
+  template:
+    metadata:
+      labels:
+        app: eshoppublicapi
+    spec:
+      containers:
+      - name: eshoppublicapi
+        image: dannydee93/eshoppublicapi:latest
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: eshoppublicapi-service
+spec:
+  selector:
+    app: eshoppublicapi
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+---

@@ -1,12 +1,5 @@
 pipeline {
     agent any
-
-    environment {
-        CHART_NAME = "my-chart"
-        RELEASE_NAME = "my-release"
-        ENVIRONMENT_NAME = env.BRANCH_NAME == 'main' ? 'production' : 'development'
-    }
-
     stages {
         stage('Checkout') {
             steps {
@@ -48,6 +41,9 @@ pipeline {
                             string(credentialsId: 'AWS_SECRET_KEY', variable: 'AWS_SECRET_ACCESS_KEY')
                         ]) {
                             // Determine environment
+                            CHART_NAME = "my-chart"
+                            RELEASE_NAME = "my-release"
+                            ENVIRONMENT_NAME = env.BRANCH_NAME == 'main' ? 'production' : 'development'
                             def isDevelopmentOrDocker = ENVIRONMENT_NAME == 'development' || ENVIRONMENT_NAME == 'Docker'
                             // Apply Kubernetes manifests conditionally
                             if (isDevelopmentOrDocker) {
@@ -58,7 +54,8 @@ pipeline {
                                 sh "aws eks --region us-east-1 update-kubeconfig --name cluster01"
                                 sh "kubectl apply -f deployment.yaml && kubectl apply -f service.yaml && kubectl apply -f ingress.yaml  && kubectl apply -f ingressClass.yaml"
                             } else {
-                        echo "Skipping deployment in this environment."
+                                echo "Skipping deployment in this environment."
+                            }
                         }
                     }
                 }

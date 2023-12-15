@@ -1,6 +1,18 @@
 pipeline {
     agent any
+
+    environment {
+        CHART_NAME = "my-chart"
+        RELEASE_NAME = "my-release"
+        ENVIRONMENT_NAME = env.BRANCH_NAME == 'main' ? 'production' : 'development'
+    }
+
     stages {
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
         stage('Build Images') {
             agent {
                 label 'agentDocker'
@@ -24,16 +36,33 @@ pipeline {
                 }
             }
         }
-        stage('Deploy') {
-            agent {
-                label 'agentDocker'
+        stage('Deploy to EKS') {
+            agent { 
+                label 'agentEKS' 
             }
             steps {
-                withCredentials([usernamePassword(credentialsId: 'dannydee93-dockerhub', usernameVariable: 'DOCKERHUB_CREDENTIALS_USR', passwordVariable: 'DOCKERHUB_CREDENTIALS_PSW')]) {
-                    sh "echo \$DOCKERHUB_CREDENTIALS_PSW | docker login -u \$DOCKERHUB_CREDENTIALS_USR --password-stdin"
-                    sh 'docker-compose up -d'
+                dir('KUBE_MANIFEST') {
+                    script {
+                        withCredentials([
+                            string(credentialsId: 'AWS_ACCESS_KEY', variable: 'AWS_ACCESS_KEY_ID'),
+                            string(credentialsId: 'AWS_SECRET_KEY', variable: 'AWS_SECRET_ACCESS_KEY')
+                        ]) {
+                            // Determine environment
+                            def isDevelopmentOrDocker = ENVIRONMENT_NAME == 'development' || ENVIRONMENT_NAME == 'Docker'
+                            // Apply Kubernetes manifests conditionally
+                            if (isDevelopmentOrDocker) {
+                                sh "kubectl delete pods --all"
+                                sh "kubectl delete deployments --all"
+                                sh "kubectl delete services --all"
+                                sh "kubectl delete ingress --all"
+                                sh "aws eks --region us-east-1 update-kubeconfig --name cluster01"
+                                sh "kubectl apply -f deployment.yaml && kubectl apply -f service.yaml && kubectl apply -f ingress.yaml  && kubectl apply -f ingressClass.yaml"
+                            } else {
+                        echo "Skipping deployment in this environment."
+                        }
+                    }
                 }
             }
-        }
+        }        
     }
 }

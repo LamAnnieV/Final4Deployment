@@ -1,7 +1,7 @@
 provider "aws" {
   access_key = var.aws_access_key
   secret_key = var.aws_secret_key
-  region = "us-east-1"
+  region = "us-west-1"
 }
 
 resource "aws_vpc" "final4_vpc" {
@@ -15,60 +15,41 @@ resource "aws_vpc" "final4_vpc" {
 resource "aws_subnet" "publicA" {
   vpc_id            = aws_vpc.final4_vpc.id
   cidr_block        = "10.0.0.0/20"
-  availability_zone = "us-east-1a"
+  availability_zone = "us-west-1a"
   
   tags = {
-    "Name" = "public-east-1a"
+    "Name" = "public-west-1a"
   }
 }
 
 resource "aws_subnet" "privateA" {
   vpc_id            = aws_vpc.final4_vpc.id
   cidr_block        = "10.0.48.0/20"
-  availability_zone = "us-east-1a"
+  availability_zone = "us-west-1a"
 
   tags = {
-    "Name" = "private-east-1a"
+    "Name" = "private-west-1a"
   }
 }
 
-resource "aws_subnet" "publicB" {
-  vpc_id            = aws_vpc.final4_vpc.id
-  cidr_block        = "10.0.16.0/20"
-  availability_zone = "us-east-1b"
-
-  tags = {
-    "Name" = "public-east-1b"
-  }
-}
-
-resource "aws_subnet" "privateB" {
-  vpc_id            = aws_vpc.final4_vpc.id
-  cidr_block        = "10.0.64.0/20"
-  availability_zone = "us-east-1b"
-
-  tags = {
-    "Name" = "private-east-1b"
-  }
-}
 
 resource "aws_subnet" "publicC" {
   vpc_id            = aws_vpc.final4_vpc.id
   cidr_block        = "10.0.32.0/20"
-  availability_zone = "us-east-1c"
+  availability_zone = "us-west-1c"
   
   tags = {
-    "Name" = "public-east-1c"
+    "Name" = "public-west-1c"
   }
 }
 
 resource "aws_subnet" "privateC" {
   vpc_id            = aws_vpc.final4_vpc.id
   cidr_block        = "10.0.80.0/20"
-  availability_zone = "us-east-1c"
+  availability_zone = "us-west-1c"
 
   tags = {
-    "Name" = "private-east-1c"
+    "Name" = "private-west-1c"
   }
 }
 output "subnet_publicA" {
@@ -79,13 +60,6 @@ output "subnet_privateA" {
   value = aws_subnet.privateA.id
 }
 
-output "subnet_publicB" {
-  value = aws_subnet.publicB.id
-}
-
-output "subnet_privateB" {
-  value =aws_subnet.privateB.id
-}
 
 output "subnet_publicC" {
   value = aws_subnet.publicC.id

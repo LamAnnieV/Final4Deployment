@@ -54,7 +54,7 @@ resource "aws_subnet" "privateC" {
 }
 
 # Create Instance 1
-resource "aws_instance" "instance1" {
+resource "aws_instance" "instanceA" {
   ami                    = "ami-0cbd40f694b804622"
   instance_type          = "t2.medium"
   subnet_id              = aws_subnet.publicA.id
@@ -73,10 +73,10 @@ resource "aws_instance" "instance1" {
 }
 
 # Create Instance 2 (Kubernetes Agent)
-resource "aws_instance" "instance2" {
+resource "aws_instance" "instanceC" {
   ami                    = "ami-0cbd40f694b804622"
   instance_type          = "t2.medium"
-  subnet_id              = aws_subnet.publicB.id
+  subnet_id              = aws_subnet.publicC.id
   vpc_security_group_ids = [aws_security_group.finalsg.id]
   user_data = "${file("docker.sh")}"
   # Define the block device mapping for the EBS volume
@@ -100,15 +100,6 @@ resource "aws_route_table_association" "privateA_rt" {
   route_table_id = aws_route_table.private.id
 }
 
-resource "aws_route_table_association" "publicB_rt" {
-  subnet_id      = aws_subnet.publicB.id
-  route_table_id = aws_route_table.public.id
-}
-
-resource "aws_route_table_association" "privateB_rt" {
-  subnet_id      = aws_subnet.privateB.id
-  route_table_id = aws_route_table.private.id
-}
 
 resource "aws_route_table_association" "publicC_rt" {
   subnet_id      = aws_subnet.publicC.id
@@ -156,7 +147,7 @@ resource "aws_route" "private_ngw" {
 # Creating Security Group to include ports 22, 8080, 8000 of ingress 
  resource "aws_security_group" "finalsg" {
  name = "Final-Jenkins_SG"
- vpc_id = aws_vpc.dep9vpc.id
+ vpc_id = aws_vpc.final4_vpc.id
 
  ingress {
   from_port = 22

@@ -52,21 +52,42 @@ resource "aws_subnet" "privateC" {
     "Name" = "private-west-1c"
   }
 }
-output "subnet_publicA" {
-  value = aws_subnet.publicA.id
+
+# Create Instance 1
+resource "aws_instance" "instance1" {
+  ami                    = "ami-0cbd40f694b804622"
+  instance_type          = "t2.medium"
+  subnet_id              = aws_subnet.publicA.id
+  vpc_security_group_ids = [aws_security_group.finalsg.id]
+  user_data = "${file("docker.sh")}"
+
+  # Define the block device mapping for the EBS volume
+  root_block_device {
+    volume_size = 16 # Specify the size of the volume in GB
+    volume_type = "gp2"
+  }  
+  
+  tags = {
+    "Name" : "Final-InstanceA"
+  }
 }
 
-output "subnet_privateA" {
-  value = aws_subnet.privateA.id
-}
-
-
-output "subnet_publicC" {
-  value = aws_subnet.publicC.id
-}
-
-output "subnet_privateC" {
-  value = aws_subnet.privateC.id
+# Create Instance 2 (Kubernetes Agent)
+resource "aws_instance" "instance2" {
+  ami                    = "ami-0cbd40f694b804622"
+  instance_type          = "t2.medium"
+  subnet_id              = aws_subnet.publicB.id
+  vpc_security_group_ids = [aws_security_group.finalsg.id]
+  user_data = "${file("docker.sh")}"
+  # Define the block device mapping for the EBS volume
+  root_block_device {
+    volume_size = 16 # Specify the size of the volume in GB
+    volume_type = "gp2"
+  }  
+    
+  tags = {
+    "Name" : "Final-InstanceC"
+  }
 }
 
 resource "aws_route_table_association" "publicA_rt" {
@@ -130,4 +151,63 @@ resource "aws_route" "private_ngw" {
   route_table_id         = aws_route_table.private.id
   destination_cidr_block = "0.0.0.0/0"
   nat_gateway_id         = aws_nat_gateway.final4_ngw.id
+}
+
+# Creating Security Group to include ports 22, 8080, 8000 of ingress 
+ resource "aws_security_group" "finalsg" {
+ name = "Final-Jenkins_SG"
+ vpc_id = aws_vpc.dep9vpc.id
+
+ ingress {
+  from_port = 22
+  to_port = 22
+  protocol = "tcp"
+  cidr_blocks = ["0.0.0.0/0"]
+
+ }
+
+  ingress {
+  from_port = 80
+  to_port = 80
+  protocol = "tcp"
+  cidr_blocks = ["0.0.0.0/0"]
+  }
+
+ ingress {
+  from_port = 8080
+  to_port = 8080
+  protocol = "tcp"
+  cidr_blocks = ["0.0.0.0/0"]
+  
+ }
+
+ egress {
+  from_port = 0
+  to_port = 0
+  protocol = "-1"
+  cidr_blocks = ["0.0.0.0/0"]
+ }
+ 
+ tags = {
+  "Name" : "Final-Jenkins_SG"
+  "Terraform" : "true"
+ }
+
+}
+
+output "subnet_publicA" {
+  value = aws_subnet.publicA.id
+}
+
+output "subnet_privateA" {
+  value = aws_subnet.privateA.id
+}
+
+
+output "subnet_publicC" {
+  value = aws_subnet.publicC.id
+}
+
+output "subnet_privateC" {
+  value = aws_subnet.privateC.id
 }

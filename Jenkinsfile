@@ -24,7 +24,7 @@ pipeline {
                 }
             }
         }
-        stage('Build Images') {
+        stage('Production') {
             agent {
                 label 'agentDocker'
             }

@@ -57,6 +57,8 @@ resource "aws_subnet" "privateC" {
 resource "aws_instance" "instanceA" {
   ami                    = "ami-0cbd40f694b804622"
   instance_type          = "t2.medium"
+  key_name               = "Fantasic4"
+  associate_public_ip_address = true
   subnet_id              = aws_subnet.publicA.id
   vpc_security_group_ids = [aws_security_group.finalsg.id]
   user_data = "${file("docker.sh")}"
@@ -76,6 +78,8 @@ resource "aws_instance" "instanceA" {
 resource "aws_instance" "instanceC" {
   ami                    = "ami-0cbd40f694b804622"
   instance_type          = "t2.medium"
+  key_name               = "Fantasic4"
+  associate_public_ip_address = true
   subnet_id              = aws_subnet.publicC.id
   vpc_security_group_ids = [aws_security_group.finalsg.id]
   user_data = "${file("docker.sh")}"

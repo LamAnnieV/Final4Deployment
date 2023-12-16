@@ -61,7 +61,7 @@ kind: Deployment
 metadata:
   name: sqlserver-deployment
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       app: sqlserver

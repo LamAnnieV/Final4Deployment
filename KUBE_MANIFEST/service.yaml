@@ -22,8 +22,8 @@ spec:
     app: eshoppublicapi
   ports:
     - protocol: TCP
-      port: 443
-      targetPort: https
+      port: 443   # Corrected from 'https'
+      targetPort: 443
 ---
 apiVersion: v1
 kind: Service

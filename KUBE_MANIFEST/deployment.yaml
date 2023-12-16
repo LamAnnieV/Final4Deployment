@@ -4,7 +4,7 @@ kind: Deployment
 metadata:
   name: eshopwebmvc-deployment
 spec:
-  replicas: 2
+  replicas: 3
   selector:
     matchLabels:
       app: eshopwebmvc
@@ -36,7 +36,7 @@ kind: Deployment
 metadata:
   name: eshoppublicapi-deployment
 spec:
-  replicas: 2
+  replicas: 3
   selector:
     matchLabels:
       app: eshoppublicapi

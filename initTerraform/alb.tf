@@ -1,17 +1,29 @@
-# Target Group
-resource "aws_lb_target_group" "target_group" {
-  name        = "F4target"
+# Target Group for InstanceA
+resource "aws_lb_target_group" "target_group_instanceA" {
+  name        = "F4target-instanceA"
   port        = 80
   protocol    = "HTTP"
-  target_type = "ip"
+  target_type = "instance"
   vpc_id      = aws_vpc.final4_vpc.id
 
   health_check {
     enabled = true
     path    = "/health"
   }
+}
 
-  depends_on = [aws_alb.ALB]
+# Target Group for InstanceC
+resource "aws_lb_target_group" "target_group_instanceC" {
+  name        = "F4target-instanceC"
+  port        = 80
+  protocol    = "HTTP"
+  target_type = "instance"
+  vpc_id      = aws_vpc.final4_vpc.id
+
+  health_check {
+    enabled = true
+    path    = "/health"
+  }
 }
 
 # Application Load Balancer
@@ -21,25 +33,29 @@ resource "aws_alb" "ALB" {
   load_balancer_type = "application"
   subnets = [
     aws_subnet.publicA.id,
-    aws_subnet.publicB.id,
     aws_subnet.publicC.id
   ]
 
   security_groups = [aws_security_group.alb_sg.id]
 
-  depends_on = [aws_internet_gateway.final4_igw]
+  depends_on = [
+    aws_internet_gateway.final4_igw,
+    aws_lb_target_group.target_group_instanceA,
+    aws_lb_target_group.target_group_instanceC
+  ]
 }
 
-# ALB Listener
-resource "aws_alb_listener" "listener" {
+# Attach Target Groups to ALB
+resource "aws_lb_listener" "listener" {
   load_balancer_arn = aws_alb.ALB.arn
   port              = "80"
   protocol          = "HTTP"
 
   default_action {
     type             = "forward"
-    target_group_arn = aws_lb_target_group.target_group.arn
+    target_group_arn = aws_lb_target_group.target_group_instanceA.arn
   }
+
 }
 
 # Output

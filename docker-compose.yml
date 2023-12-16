@@ -23,11 +23,3 @@ services:
       - SA_PASSWORD=@someThingComplicated1234
       - ACCEPT_EULA=Y
 
-services:
-  stress:
-    build:
-      context: .
-      dockerfile: src/StressTest/Dockerfile
-
-  stresstest:
-    image: dannydee93/stresstest:latest

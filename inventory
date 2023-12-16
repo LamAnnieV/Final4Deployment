@@ -1,1 +1,11 @@
+[jenkins_server]
 18.118.138.44
+
+[docker_server]
+18.224.137.7
+
+[test_server]
+3.17.158.101
+
+[test_server2]
+18.217.131.64

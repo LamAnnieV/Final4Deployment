@@ -1,19 +1,104 @@
 ---
-
-- hosts: all
+- hosts: test_server2
   become: true
   tasks:
+    - name: Check if Jenkins is already installed
+      command: which jenkins
+      register: jenkins_installed
+      ignore_errors: yes
 
-  - name: update repository index
-    apt:
-      update_cache: yes
+    # Jenkins installation tasks
+    - name: Update apt cache for Jenkins
+      apt:
+        update_cache: yes
+      when: jenkins_installed.rc != 0
 
-  - name: install apache2 package
-    apt:
-      name: apache2
-      state: latest
+    - name: Install OpenJDK 11 (Jenkins requirement)
+      apt:
+        name: openjdk-11-jdk
+        state: latest
+      when: jenkins_installed.rc != 0
 
-  - name: add php support for apache
-    apt:
-      name: libapache2-mod-php
-      state: latest
+    - name: Download Jenkins GPG key
+      ansible.builtin.get_url:
+        url: https://pkg.jenkins.io/debian/jenkins.io-2023.key
+        dest: /tmp/jenkins.io-2023.key
+        mode: '0644'
+      when: jenkins_installed.rc != 0
+
+    - name: Add Jenkins GPG key
+      ansible.builtin.apt_key:
+        file: /tmp/jenkins.io-2023.key
+        state: present
+      when: jenkins_installed.rc != 0
+
+    - name: Add Jenkins repository
+      apt_repository:
+        repo: deb http://pkg.jenkins.io/debian-stable binary/
+        state: present
+        update_cache: yes
+      when: jenkins_installed.rc != 0
+
+    - name: Install Jenkins
+      apt:
+        name: jenkins
+        state: latest
+      when: jenkins_installed.rc != 0
+
+    - name: Ensure Jenkins is started and enabled to start at boot
+      systemd:
+        name: jenkins
+        state: started
+        enabled: yes
+
+    # Docker installation tasks
+    - name: Check if Docker is already installed
+      command: which docker
+      register: docker_installed
+      ignore_errors: yes
+
+    - name: Update apt cache for Docker
+      apt:
+        update_cache: yes
+      when: docker_installed.rc != 0
+
+    - name: Install required packages for Docker
+      apt:
+        name: "{{ packages }}"
+        state: latest
+      vars:
+        packages:
+          - apt-transport-https
+          - ca-certificates
+          - curl
+          - gnupg
+          - lsb-release
+      when: docker_installed.rc != 0
+
+    - name: Add Docker’s official GPG key
+      ansible.builtin.get_url:
+        url: https://download.docker.com/linux/ubuntu/gpg
+        dest: /usr/share/keyrings/docker-archive-keyring.gpg
+        mode: '0644'
+      when: docker_installed.rc != 0
+
+    - name: Set up the stable Docker repository
+      apt_repository:
+        repo: "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable"
+        state: present
+        update_cache: yes
+      when: docker_installed.rc != 0
+
+    - name: Install Docker Engine
+      apt:
+        name: docker-ce
+        state: latest
+      when: docker_installed.rc != 0
+
+    - name: Ensure Docker is started and enabled to start at boot
+      systemd:
+        name: docker
+        state: started
+        enabled: yes
+      when: docker_installed.rc != 0
+

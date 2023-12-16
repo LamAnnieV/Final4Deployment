@@ -19,7 +19,6 @@ resource "aws_subnet" "publicA" {
 
   tags = {
     "Name" = "public-east-1a"
-    "EnvironmentName" = "Docker"
     "kubernetes.io/role/elb"  = "1"
   }
 }
@@ -41,7 +40,6 @@ resource "aws_subnet" "publicB" {
 
   tags = {
     "Name" = "public-east-1b"
-    "EnvironmentName" = "Docker"
     "kubernetes.io/role/elb"  = "1"
   }
 }
@@ -63,7 +61,6 @@ resource "aws_subnet" "publicC" {
 
   tags = {
     "Name" = "public-east-1c"
-    "EnvironmentName" = "Docker"
     "kubernetes.io/role/elb"  = "1"
   }
 }

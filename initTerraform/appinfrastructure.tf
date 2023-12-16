@@ -1,7 +1,7 @@
 provider "aws" {
-  access_key = var.aws_access_key
-  secret_key = var.aws_secret_key
-  region = "us-west-1"
+  access_key = var.access_key
+  secret_key = var.secret_key
+  region = "us-east-1"
 }
 
 resource "aws_vpc" "final4_vpc" {
@@ -13,84 +13,62 @@ resource "aws_vpc" "final4_vpc" {
 }
 
 resource "aws_subnet" "publicA" {
-  vpc_id            = aws_vpc.final4_vpc.id
+  vpc_id = aws_vpc.final4_vpc.id
   cidr_block        = "10.0.0.0/20"
-  availability_zone = "us-west-1a"
+  availability_zone = "us-east-1a"
   
   tags = {
-    "Name" = "public-west-1a"
+    "Name" = "public-east-1a"
   }
 }
 
 resource "aws_subnet" "privateA" {
-  vpc_id            = aws_vpc.final4_vpc.id
+  vpc_id = aws_vpc.final4_vpc.id
   cidr_block        = "10.0.48.0/20"
-  availability_zone = "us-west-1a"
+  availability_zone = "us-east-1a"
 
   tags = {
-    "Name" = "private-west-1a"
+    "Name" = "private-east-1a"
   }
 }
 
+resource "aws_subnet" "publicB" {
+  vpc_id = aws_vpc.final4_vpc.id
+  cidr_block        = "10.0.16.0/20"
+  availability_zone = "us-east-1b"
+
+  tags = {
+    "Name" = "public-east-1b"
+  }
+}
+
+resource "aws_subnet" "privateB" {
+  vpc_id = aws_vpc.final4_vpc.id
+  cidr_block        = "10.0.64.0/20"
+  availability_zone = "us-east-1b"
+
+  tags = {
+    "Name" = "private-east-1b"
+  }
+}
 
 resource "aws_subnet" "publicC" {
-  vpc_id            = aws_vpc.final4_vpc.id
+  vpc_id = aws_vpc.final4_vpc.id
   cidr_block        = "10.0.32.0/20"
-  availability_zone = "us-west-1c"
-  
+  availability_zone = "us-east-1c"
+
   tags = {
-    "Name" = "public-west-1c"
+    "Name" = "public-east-1c"
   }
 }
 
 resource "aws_subnet" "privateC" {
-  vpc_id            = aws_vpc.final4_vpc.id
+  vpc_id = aws_vpc.final4_vpc.id
   cidr_block        = "10.0.80.0/20"
-  availability_zone = "us-west-1c"
+  availability_zone = "us-east-1c"
 
   tags = {
-    "Name" = "private-west-1c"
-  }
-}
-
-# Create Instance 1
-resource "aws_instance" "instanceA" {
-  ami                    = "ami-0cbd40f694b804622"
-  instance_type          = "t2.medium"
-  key_name               = "Fantasic4"
-  associate_public_ip_address = true
-  subnet_id              = aws_subnet.publicA.id
-  vpc_security_group_ids = [aws_security_group.finalsg.id]
-  user_data = "${file("docker.sh")}"
-
-  # Define the block device mapping for the EBS volume
-  root_block_device {
-    volume_size = 16 # Specify the size of the volume in GB
-    volume_type = "gp2"
-  }  
-  
-  tags = {
-    "Name" : "Final-InstanceA"
-  }
-}
-
-# Create Instance 2 (Kubernetes Agent)
-resource "aws_instance" "instanceC" {
-  ami                    = "ami-0cbd40f694b804622"
-  instance_type          = "t2.medium"
-  key_name               = "Fantasic4"
-  associate_public_ip_address = true
-  subnet_id              = aws_subnet.publicC.id
-  vpc_security_group_ids = [aws_security_group.finalsg.id]
-  user_data = "${file("docker.sh")}"
-  # Define the block device mapping for the EBS volume
-  root_block_device {
-    volume_size = 16 # Specify the size of the volume in GB
-    volume_type = "gp2"
-  }  
-    
-  tags = {
-    "Name" : "Final-InstanceC"
+    "Name" = "private-east-1c"
   }
 }
 
@@ -104,6 +82,15 @@ resource "aws_route_table_association" "privateA_rt" {
   route_table_id = aws_route_table.private.id
 }
 
+resource "aws_route_table_association" "publicB_rt" {
+  subnet_id      = aws_subnet.publicB.id
+  route_table_id = aws_route_table.public.id
+}
+
+resource "aws_route_table_association" "privateB_rt" {
+  subnet_id      = aws_subnet.privateB.id
+  route_table_id = aws_route_table.private.id
+}
 
 resource "aws_route_table_association" "publicC_rt" {
   subnet_id      = aws_subnet.publicC.id
@@ -148,47 +135,6 @@ resource "aws_route" "private_ngw" {
   nat_gateway_id         = aws_nat_gateway.final4_ngw.id
 }
 
-# Creating Security Group to include ports 22, 8080, 8000 of ingress 
- resource "aws_security_group" "finalsg" {
- name = "Final-Jenkins_SG"
- vpc_id = aws_vpc.final4_vpc.id
-
- ingress {
-  from_port = 22
-  to_port = 22
-  protocol = "tcp"
-  cidr_blocks = ["0.0.0.0/0"]
-
- }
-
-  ingress {
-  from_port = 80
-  to_port = 80
-  protocol = "tcp"
-  cidr_blocks = ["0.0.0.0/0"]
-  }
-
- ingress {
-  from_port = 8080
-  to_port = 8080
-  protocol = "tcp"
-  cidr_blocks = ["0.0.0.0/0"]
-  
- }
-
- egress {
-  from_port = 0
-  to_port = 0
-  protocol = "-1"
-  cidr_blocks = ["0.0.0.0/0"]
- }
- 
- tags = {
-  "Name" : "Final-Jenkins_SG"
-  "Terraform" : "true"
- }
-
-}
 
 output "subnet_publicA" {
   value = aws_subnet.publicA.id
@@ -198,11 +144,18 @@ output "subnet_privateA" {
   value = aws_subnet.privateA.id
 }
 
+output "subnet_publicB" {
+  value = aws_subnet.publicB.id
+}
+
+output "subnet_privateB" {
+  value =aws_subnet.privateB.id
+}
 
 output "subnet_publicC" {
   value = aws_subnet.publicC.id
 }
 
 output "subnet_privateC" {
-  value = aws_subnet.privateC.id
+  value =aws_subnet.privateC.id
 }

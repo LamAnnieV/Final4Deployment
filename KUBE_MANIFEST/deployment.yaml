@@ -4,7 +4,7 @@ kind: Deployment
 metadata:
   name: eshopwebmvc-deployment
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       app: eshopwebmvc
@@ -16,13 +16,27 @@ spec:
       containers:
       - name: eshopwebmvc
         image: dannydee93/eshopwebmvc:latest
+        ports:
+        - name: http
+          containerPort: 80  
+        resources:
+          limits:
+            cpu: "500m"
+            memory: "512Mi"
+          requests:
+            cpu: "250m"
+            memory: "256Mi"
+        readinessProbe:
+          httpGet:
+            path: /
+            port: http
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: eshoppublicapi-deployment
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       app: eshoppublicapi
@@ -34,6 +48,13 @@ spec:
       containers:
       - name: eshoppublicapi
         image: dannydee93/eshoppublicapi:latest
+        ports:
+        - name: https
+          containerPort: 443
+        readinessProbe:
+          httpGet:
+            path: /
+            port: https
 ---
 apiVersion: apps/v1
 kind: Deployment

@@ -12,7 +12,7 @@ spec:
   rules:
     - http:
         paths:
-          - path: /
+          - path: /eshopwebmvc
             pathType: Prefix
             backend:
               service:
@@ -21,7 +21,7 @@ spec:
                   number: 80
     - http:
         paths:
-          - path: /
+          - path: /eshoppublicapi
             pathType: Prefix
             backend:
               service:

@@ -4,6 +4,7 @@ kind: Service
 metadata:
   name: eshopwebmvc-service
 spec:
+  type: NodePort
   selector:
     app: eshopwebmvc
   ports:
@@ -16,6 +17,7 @@ kind: Service
 metadata:
   name: eshoppublicapi-service
 spec:
+  type: NodePort
   selector:
     app: eshoppublicapi
   ports:
@@ -28,10 +30,13 @@ kind: Service
 metadata:
   name: sqlserver-service
 spec:
+  type: NodePort
   selector:
     app: sqlserver
   ports:
     - protocol: TCP
       port: 1433
       targetPort: 1433
+---
+
 ---

@@ -65,7 +65,7 @@ ________________________________________________________________________________
 ![infrastructure](Images/FinalDiagram.png)
 _____________________________________________________________
 
-**<ins>Jenkins infrastructure [.tf](path to file):**
+**<ins>Jenkins infrastructure [file](jenkinsTerraform/):**
 
         
 •	1 Subnet with one instance for the Jenkins Manager
@@ -77,10 +77,8 @@ _____________________________________________________________
         •	1 instance for Jenkins agent, where Terraform is installed to create the application infrastructure
         
         •	1 instance for Jenkins agent, where Kubectl is installed to create the Kubernetes infrastructure and deploy the application to EKS
-<details>
-  
-<details>
-  <summary><strong>Application infrastructure [.tf](path to file)</strong></summary>
+        
+**<ins>Application infrastructure [files](initTerraform/):**
 
 •	1 VPC *(avoids any network conflicts, flexible network design, & isolates EKS cluster from other resources in AWS account)*
 
@@ -88,7 +86,7 @@ _____________________________________________________________
 
 •	1 Private Subnet and 1 Public Subnet in each Availability Zones
 
-**<ins>Application infrastructure [.tf](path to file):**
+**<ins>Kubernetes  infrastructure [files](KUBE_MANIFEST/):**
 
 •	1 EKS Cluster
 
@@ -116,9 +114,6 @@ _____________________________________________________________
         
 •	1 Private Subnet and 1 Public Subnet in each Availability Zones
 
-**<ins>Kubernetes  infrastructure [.tf](path to file):**
-
-•	1 VPC *(avoids any network conflicts, flexible network design, & isolates EKS cluster from other resources in AWS account)*
 
 **<ins>ECS  infrastructure [.tf](path to file):**
 

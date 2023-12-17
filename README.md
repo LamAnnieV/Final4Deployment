@@ -26,11 +26,6 @@ _____________________________________________________________
 
 _____________________________________________________________
 
-### <ins>Infrastructure:</ins>
-
-![infrastructure](Images/FinalDiagram.png)
-_____________________________________________________________
-
 ### <ins>Deployment Strategy:</ins>
 
 Rolling Deployment strategy
@@ -42,8 +37,6 @@ ________________________________________________________________________
 ### <ins>Deployment Steps:</ins>
 
 __________________________________________________________
-
-
 
 # Git/GitHub
 Branch
@@ -67,7 +60,14 @@ Merge====
 
 _______________________________________________________________________________________________________
 
-<summary>Jenkins infrastructure</summary>
+### <ins>Infrastructure Diagram:</ins>
+
+![infrastructure](Images/FinalDiagram.png)
+_____________________________________________________________
+
+<details>
+  <summary><strong>Jenkins infrastructure</strong></summary>
+        
 •	1 Subnet with one instance for the Jenkins Manager
 •	1 Subnet with three instances, that can be detached from the igw and attached to the nat gateway to make it private
         - 1 instance for Jenkins agent, where Docker and Docker-compose are installed to build the Docker images for the frontend and the backend

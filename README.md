@@ -12,45 +12,26 @@ _______________________________________________________
 ## <ins>Purpose:</ins>
 
 
-
-
-
-
-
-
-
-
+FinalDiagram.png
 _________________________________________________________________
+
 ## <ins>Description</ins>
 
 As our deployment journey progressed, we utilized docker compose, EKS, and ECS. 
 _____________________________________________________________
 
-## <ins>Budget</ins>
-
-_________________________________________________________
-
 ## <ins>ASP.Net Core Application:</ins>
-
-_____________________________________________________
 
 -passionate about optimizing user experience and client satisfaction. The fairly new Microsoft application framework adds flexibility and lower latency 
 
+![app](Images/Deployed_Dockers_Agent.png)
 
+_____________________________________________________________
 
+### <ins>Infrastructure:</ins>
 
-
-
-_______________________________________________________
-## <ins>Issues</ins>
-
-
-503 errors when trying to deploy the application within EKS and ECS clusters. 
-Connecting to an application load balancer
-
-
-__________________________________________________________
-
+![infrastructure](Images/FinalDiagram.png)
+_____________________________________________________________
 
 ### <ins>Deployment Strategy:</ins>
 
@@ -213,7 +194,7 @@ ______________________________________________________________
 
 * EKS takes care of many services necessary for our application to work including our target zones so that our ALB gets automatically directed to the ones opened in our services:
 
-![target](Deployment9Img/targetgroup.png)
+![target](Images/targetgroup.png)
     
 <ins>The [deployment.yaml](/KUBE_MANIFEST/deployment.yaml) defines the configurations for the containers based on the backend and frontend images:</ins>
 
@@ -238,7 +219,7 @@ ________________________________________________________________________________
 * Created certificate manager to secure the traffic from clients and associated ingress (incoming traffic) controller with the associated domain name that will be created to access our application through the load balancer.
 
 * List of polocies under the AWSLoadBalancerControllerRole on our worker nodes (2 instances configured to spin back up if ever terminated:
-![policies](Deployment9Img/iamroles.png)
+![policies](Images/iamroles.png)
 
  ______________________________________________________________________________________________________
 **<ins> Configured ALB controller:</ins>**
@@ -250,7 +231,7 @@ ________________________________________________________________________________
 
 •	Lasty, I ran: ```kubectl apply -k "github.com/aws/eks-charts/stable/aws-load-balancer-controller/crds"``` to apply Kubernetes resources that we download from an ingressclass.yaml file with pre-configured resource definitions so that AWS can manage the resources necessary to run the ALB efficiently.
 
-![cw](Deployment9Img/load_balancer.png)</ins>
+![cw](Images/load_balancer.png)</ins>
 
 ______________________________________________________________________________________________________
 **<ins>Installed cloudwatch agent:</ins>** 
@@ -269,9 +250,20 @@ Purpose
 
 
 Cloudwatch log groups:
-![cw](Deployment9Img/cloudwatchlogs.png)
+![cw](Images/cloudwatchlogs.png)
 
+## <ins>Issues</ins>
+
+
+503 errors when trying to deploy the application within EKS and ECS clusters. 
+Connecting to an application load balancer
+
+
+__________________________________________________________
 _______________________________________________________________________
+## <ins>Budget</ins>
+
+_________________________________________________________
 
 
 **<ins>Conclusion</ins>**

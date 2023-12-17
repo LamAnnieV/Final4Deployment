@@ -119,7 +119,7 @@ _____________________________________________________________
 
 •	1 VPC *(avoids any network conflicts, flexible network design, & isolates EKS cluster from other resources in AWS account)*
 
-<details>
+
 ___________________________________________________________________________________________________________________________
 
 

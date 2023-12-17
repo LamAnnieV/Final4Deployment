@@ -87,7 +87,8 @@ _____________________________________________________________
 •	1 Private Subnet and 1 Public Subnet in each Availability Zones
 
 <details>
-  
+
+<details>
   <summary><strong>Kubernetes infrastructure [.tf](path to file)</strong></summary>
 
 •	1 EKS Cluster
@@ -117,11 +118,12 @@ _____________________________________________________________
 •	1 Private Subnet and 1 Public Subnet in each Availability Zones
 
 <details>
-  
+<details>  
   <summary><strong>Kubernetes infrastructure [.tf](path to file)</strong></summary>
 
 •	1 VPC *(avoids any network conflicts, flexible network design, & isolates EKS cluster from other resources in AWS account)*
-
+<details>
+<details>
   <summary><strong>ECS infrastructure [.tf](path to file) [.tf](path to file)</strong></summary>
 
 •	1 VPC *(avoids any network conflicts, flexible network design, & isolates EKS cluster from other resources in AWS account)*

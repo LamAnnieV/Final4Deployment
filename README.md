@@ -72,40 +72,61 @@ _____________________________________________________________
 
 •	1 Subnet with three instances, that can be detached from the igw and attached to the nat gateway to make it private
 
-        - 1 instance for Jenkins agent, where Docker and Docker-compose are installed to build the Docker images for the frontend and the backend
+        •	1 instance for Jenkins agent, where Docker and Docker-compose are installed to build the Docker images for the frontend and the backend
         
-        - 1 instance for Jenkins agent, where Terraform is installed to create the application infrastructure
+        •	1 instance for Jenkins agent, where Terraform is installed to create the application infrastructure
         
-        - 1 instance for Jenkins agent, where Kubectl is installed to create the Kubernetes infrastructure and deploy the application to EKS
-</details>
-
-**<ins>Application infrastructure [.tf](path to file):**
+        •	1 instance for Jenkins agent, where Kubectl is installed to create the Kubernetes infrastructure and deploy the application to EKS
+<details>
+  <summary><strong>Application infrastructure [.tf](path to file)</strong></summary>
 
 •	1 VPC *(avoids any network conflicts, flexible network design, & isolates EKS cluster from other resources in AWS account)*
+
 •	3 Availability Zones
+
 •	1 Private Subnet and 1 Public Subnet in each Availability Zones
 
-**<ins>Kubernetes infrastructure [.tf](path to file):**
+<details>
+  
+  <summary><strong>Kubernetes infrastructure [.tf](path to file)</strong></summary>
 
 •	1 EKS Cluster
+
 •	Kubernetes API in the Infrastructure Control Plane
+
 •	1 node in each Private Subnets:  
+
 •	In each of the nodes:
-        - kubelet
-        - application layer pod/container (deployment)
-        - application service
-        - web layer pod/container (deployment)
-        - web service
-        - ingress
+
+        •	kubelet
+        
+        •	application layer pod/container (deployment)
+        
+        •	application service
+        
+        •	web layer pod/container (deployment)
+        
+        •	web service
+        
+        •	ingress
+        
 •	In one of the Public Subnets:  
-        - Application Load Balancer
+
+        •	pplication Load Balancer
+        
 •	1 Private Subnet and 1 Public Subnet in each Availability Zones
 
-**<ins>ECS  infrastructure [.tf](path to file):**
+<details>
+  
+  <summary><strong>Kubernetes infrastructure [.tf](path to file)</strong></summary>
 
 •	1 VPC *(avoids any network conflicts, flexible network design, & isolates EKS cluster from other resources in AWS account)*
 
+  <summary><strong>ECS infrastructure [.tf](path to file) [.tf](path to file)</strong></summary>
 
+•	1 VPC *(avoids any network conflicts, flexible network design, & isolates EKS cluster from other resources in AWS account)*
+
+<details>
 ___________________________________________________________________________________________________________________________
 
 

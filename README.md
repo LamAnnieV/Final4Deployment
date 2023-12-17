@@ -78,6 +78,7 @@ _____________________________________________________________
         
         •	1 instance for Jenkins agent, where Kubectl is installed to create the Kubernetes infrastructure and deploy the application to EKS
 <details>
+<details>
   <summary><strong>Application infrastructure [.tf](path to file)</strong></summary>
 
 •	1 VPC *(avoids any network conflicts, flexible network design, & isolates EKS cluster from other resources in AWS account)*

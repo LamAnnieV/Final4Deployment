@@ -72,11 +72,11 @@ _____________________________________________________________
 
 •	1 Subnet with three instances, that can be detached from the igw and attached to the nat gateway to make it private
 
-        •	1 instance for Jenkins agent, where Docker and Docker-compose are installed to build the Docker images for the frontend and the backend
+        •	1 instance for Jenkins agent, where [Docker and Docker-compose](jenkinsTerraform/dockeragent2.sh) are installed to build the Docker images for the frontend and the backend
         
-        •	1 instance for Jenkins agent, where Terraform is installed to create the application infrastructure
+        •	1 instance for Jenkins agent, where [Terraform](jenkinsTerraform/terraform.sh) is installed to create the application infrastructure
         
-        •	1 instance for Jenkins agent, where Kubectl is installed to create the Kubernetes infrastructure and deploy the application to EKS
+        •	1 instance for Jenkins agent, where [kubectl](jenkinsTerraform/eks-jre.sh) is installed to create the Kubernetes infrastructure and deploy the application to EKS
         
 **<ins>Application infrastructure [files](initTerraform/):**
 
@@ -115,7 +115,7 @@ _____________________________________________________________
 •	1 Private Subnet and 1 Public Subnet in each Availability Zones
 
 
-**<ins>ECS  infrastructure [.tf](path to file):**
+**<ins>ECS  infrastructure [files](ecsTerraform/):**
 
 •	1 VPC *(avoids any network conflicts, flexible network design, & isolates EKS cluster from other resources in AWS account)*
 

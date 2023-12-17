@@ -73,6 +73,7 @@ _____________________________________________________________
         - 1 instance for Jenkins agent, where Docker and Docker-compose are installed to build the Docker images for the frontend and the backend
         - 1 instance for Jenkins agent, where Terraform is installed to create the application infrastructure
         - 1 instance for Jenkins agent, where Kubectl is installed to create the Kubernetes infrastructure and deploy the application to EKS
+</details>
 
 **<ins>Application infrastructure [.tf](path to file):**
 

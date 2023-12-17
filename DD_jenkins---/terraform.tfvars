@@ -1,6 +1,0 @@
-aws_access_key = ""
-aws_secret_key = ""
-region_1 = "us-east-1"
-ami = "ami-0e83be366243f524a"
-key_name = "Final_Project_2"
-instance_type = "t2.medium"

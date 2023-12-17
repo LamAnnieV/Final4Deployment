@@ -14,14 +14,7 @@ _______________________________________________________
 
 
 
-&emsp;&emsp;&emsp;&emsp;
 
-
--
-
-
-
-Infrastructure
 
 
 
@@ -29,18 +22,16 @@ Infrastructure
 
 _________________________________________________________________
 ## <ins>Description</ins>
+
+As our deployment journey progressed, we utilized docker compose, EKS, and ECS. 
 _____________________________________________________________
 
-&emsp;&emsp;&emsp;&emsp;		As our deployment journey progressed, we utilized docker compose, EKS, and ECS. 
-
-
-
-
-Budget
+## <ins>Budget</ins>
 
 _________________________________________________________
 
 ## <ins>ASP.Net Core Application:</ins>
+
 _____________________________________________________
 
 -passionate about optimizing user experience and client satisfaction. The fairly new Microsoft application framework adds flexibility and lower latency 
@@ -52,7 +43,6 @@ _____________________________________________________
 
 _______________________________________________________
 ## <ins>Issues</ins>
-_______________________________________________________
 
 
 503 errors when trying to deploy the application within EKS and ECS clusters. 
@@ -66,6 +56,8 @@ __________________________________________________________
 
 Rolling Deployment strategy
 Ansible makes it easier for us to update any instance without having to go into Terraform. The Ansible tool helps us reduce the risk of configuration drift
+
+
 ________________________________________________________________________
 
 ### <ins>Deployment Steps:</ins>

@@ -87,7 +87,7 @@ Define your managed hosts in the inventory file:
 ## Playbook File
 Create playbook with .yml file run using ‘ansible-playbook --ask-become-pass -vvv .yml’:
 
-- [file](install_.yml)
+- [Playbook](install_.yml)
 
 _____________________________________________________________
 

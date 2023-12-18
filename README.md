@@ -125,14 +125,12 @@ ________________________________________________________________________________
 
 Dockerfiles:</ins>**
 
-**</ins>The [Dockerfile](Dockerfile.frontend)</ins> under Web files contain the frontend image:**
+**</ins>The [Dockerfile](src/Web/Dockerfile)</ins> under Web files contain the frontend image:**
 
 •	The image contains the dependencies for the default kestel web server that comes within the ASP.Net Core application code.
 
-
-
 ______________________________________________________________________________________________________
-**<ins>The [Dockerfile](Dockerfile.backend)</ins> under API files contain the backend image:**
+**<ins>The [Dockerfile](src/PublicApi/Dockerfile)</ins> under API files contain the backend image:**
 
 •	The image contains an ASP.Net Core REST API and its pip dependencies. 
 
@@ -286,7 +284,7 @@ Purpose
 
 
 Cloudwatch log groups:
-![cw](Images/cloudwatchlogs.png)
+![cw](Images/Monitoring.png)
 
 ## <ins>Issues</ins>
 
@@ -294,11 +292,14 @@ Cloudwatch log groups:
 503 errors when trying to deploy the application within EKS and ECS clusters. 
 Connecting to an application load balancer
 
+![Error](Images/DBnotSupported.png)
 
-__________________________________________________________
+![Error](Images/deployment_error.png)
+
 _______________________________________________________________________
 ## <ins>Budget</ins>
 
+![Budget](Budget.png)
 _________________________________________________________
 
 

@@ -65,6 +65,19 @@ ________________________________________________________________________________
 ![infrastructure](Images/FinalDiagram.png)
 _____________________________________________________________
 
+# Ansible 
+## Ansible is a versatile automation tool that streamlines complex IT processes, ideal for managing system configurations, deploying applications, and orchestrating workflows across various environments. Its simplicity, stemming from an agentless setup and easy-to-understand YAML-based playbooks, makes it accessible for both small and large-scale operations. This scalability and flexibility make Ansible a key asset in DevOps, boosting efficiency and ensuring consistent delivery of IT services.
+
+- Install SSH: Install OpenSSH server on your machine. `sudo apt install openssh-server`
+- Generate SSH Keys: Generate a key for default use and another specifically for Ansible. `ssh-keygen -t ed25519 -C 'jo default'```ssh-keygen -t ed25519 -C "ansible"`
+
+
+
+
+
+
+_____________________________________________________________
+
 **<ins>Jenkins infrastructure [file](jenkinsTerraform/):**
 
         

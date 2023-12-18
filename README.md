@@ -77,13 +77,17 @@ ssh-copy-id -i ~/.ssh/ansible.pub your-ip`
 ## Ansible Configuration File (.cfg)
 Create a configuration file for Ansible settings:
 
-- [file](ansible.cfg)
+- [Ansible Config File ](ansible.cfg)
+
+## Inventory File Setup
+Define your managed hosts in the inventory file:
+
+- [Inventory](Inventory)
 
 ## Playbook File
 Create playbook with .yml file run using ‘ansible-playbook --ask-become-pass -vvv .yml’:
 
 - [file](install_.yml)
-
 
 _____________________________________________________________
 

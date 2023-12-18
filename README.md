@@ -299,7 +299,7 @@ Connecting to an application load balancer
 _______________________________________________________________________
 ## <ins>Budget</ins>
 
-![Budget](Budget.png)
+![Budget](Images/Budget.png)
 _________________________________________________________
 
 

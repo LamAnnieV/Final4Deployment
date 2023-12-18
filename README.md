@@ -66,14 +66,23 @@ ________________________________________________________________________________
 _____________________________________________________________
 
 # Ansible 
-## Ansible is a versatile automation tool that streamlines complex IT processes, ideal for managing system configurations, deploying applications, and orchestrating workflows across various environments. Its simplicity, stemming from an agentless setup and easy-to-understand YAML-based playbooks, makes it accessible for both small and large-scale operations. This scalability and flexibility make Ansible a key asset in DevOps, boosting efficiency and ensuring consistent delivery of IT services.
+Ansible is a versatile automation tool that streamlines complex IT processes, ideal for managing system configurations, deploying applications, and orchestrating workflows across various environments. Its simplicity, stemming from an agentless setup and easy-to-understand YAML-based playbooks, makes it accessible for both small and large-scale operations. This scalability and flexibility make Ansible a key asset in DevOps, boosting efficiency and ensuring consistent delivery of IT services.
 
 - Install SSH: Install OpenSSH server on your machine. `sudo apt install openssh-server`
 - Generate SSH Keys: Generate a key for default use and another specifically for Ansible. `ssh-keygen -t ed25519 -C 'jo default'```ssh-keygen -t ed25519 -C "ansible"`
+- Copy SSH Keys to Hosts: Use ssh-copy-id to copy keys to your remote hosts. `ssh-copy-id -i ~/.ssh/id_ed25519.pub your-ip
+ssh-copy-id -i ~/.ssh/ansible.pub your-ip`
+- Remote Login: Use the specific key to log into the remote host. `ssh -i ~/.ssh/ansible host-ip`
 
+## Ansible Configuration File (.cfg)
+Create a configuration file for Ansible settings:
 
+- [file](ansible.cfg)
 
+## Playbook File
+Create playbook with .yml file run using ‘ansible-playbook --ask-become-pass -vvv .yml’:
 
+- [file](install_.yml)
 
 
 _____________________________________________________________

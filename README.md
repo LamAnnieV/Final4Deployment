@@ -158,16 +158,15 @@ Kubernetes is an open-source container orchestration platform that automates the
 
 The Kubernetes objects that are included in the EKS Cluster are an ingress, 2 services, and 2 deployments for each node and a load balancer:
 
-•	The [ingress.yaml](/KUBE_MANIFEST/ingress.yaml) defines the ingress that received traffic from the load balancer and allows it into the node. 
+- The [ingress.yaml](/KUBE_MANIFEST/ingress.yaml) defines the ingress that received traffic from the load balancer and allows it into the node. 
 
-•	The [service.yaml](/KUBE_MANIFEST/service.yaml) includes the services for both the backend and frontend. Each service forwards traffic to the respective frontend and backend containers defined in the deployment.yaml:
+- The [service.yaml](/KUBE_MANIFEST/service.yaml) includes the services for both the backend and frontend. Each service forwards traffic to the respective frontend and backend containers defined in the deployment.yaml:
 
-- The frontend service depends on the API to target the traffic from the load balancer  
+        - The frontend service depends on the API to target the traffic from the load balancer  
     
-* EKS takes care of many services necessary for our application to work including our target zones so that our ALB gets automatically directed to the ones opened in our services:
-    
-•	The [deployment.yaml](/KUBE_MANIFEST/deployment.yaml) defines the configurations for the containers based on the backend and frontend images
-- The frontend image is configured to point to the backend service
+- The [deployment.yaml](/KUBE_MANIFEST/deployment.yaml) defines the configurations for the containers based on the backend and frontend images
+
+          - The frontend image is configured to point to the backend service
 
 _________________________________________________________________________________________________________
 

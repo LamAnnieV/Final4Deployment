@@ -9,12 +9,12 @@
 ### *Team Director:* Annie Lam
 
 _______________________________________________________
-## <ins>Purpose:</ins>
+# <ins>Purpose:</ins>
 
-Deploy a ecommerce application.  Our deployment journey progressed, we utilized docker-compose, EKS, and ECS.
+Deploy an e-commerce application on EKS, but as our deployment journey progressed, we utilized docker-compose, EKS, and ECS.  This documentation focuses on the deployment of EKS
 _________________________________________________________________
 
-## <ins>ASP.Net Core Application:</ins>
+# <ins>ASP.Net Core Application:</ins>
 
 -passionate about optimizing user experience and client satisfaction. The fairly new Microsoft application framework adds flexibility and lower latency 
 
@@ -154,36 +154,22 @@ Kubernetes is an open-source container orchestration platform that automates the
         •	Application Load Balancer -to evenly distribute incoming network traffic across resources to optimize resource utilization, improve application availability, and ensure efficient handling of requests.
         
 
-**<ins>Kubernetes manifest:</ins>**
+## Kubernetes manifest [(files)](KUBE_MANIFEST/):
 
-<ins>The Kubernetes objects that are included in the EKS Cluster are an ingress, 2 services, and 2 deployments for each node:</ins>
+The Kubernetes objects that are included in the EKS Cluster are an ingress, 2 services, and 2 deployments for each node and a load balancer:
 
 •	The [ingress.yaml](/KUBE_MANIFEST/ingress.yaml) defines the ingress that received traffic from the load balancer and allows it into the node. 
 
-<ins>The [service.yaml](/KUBE_MANIFEST/service.yaml) includes the services for both the backend and frontend. Each service forwards traffic to the respective frontend and backend containers defined in the deployment.yaml:</ins>
+•	The [service.yaml](/KUBE_MANIFEST/service.yaml) includes the services for both the backend and frontend. Each service forwards traffic to the respective frontend and backend containers defined in the deployment.yaml:
 
 - The frontend service depends on the API to target the traffic from the load balancer  
     
-
 * EKS takes care of many services necessary for our application to work including our target zones so that our ALB gets automatically directed to the ones opened in our services:
-
-![target](Images/targetgroup.png)
     
-<ins>The [deployment.yaml](/KUBE_MANIFEST/deployment.yaml) defines the configurations for the containers based on the backend and frontend images:</ins>
-
-- The frontend image is configured to point to the backend service ``` "proxy": "http://d9-backend-service-nodeport:8000" ```
+•	The [deployment.yaml](/KUBE_MANIFEST/deployment.yaml) defines the configurations for the containers based on the backend and frontend images
+- The frontend image is configured to point to the backend service
 
 _________________________________________________________________________________________________________
-**<ins>ECS  infrastructure [(files)](ecsTerraform/):**
-
-•	1 VPC *(avoids any network conflicts, flexible network design, & isolates EKS cluster from other resources in AWS account)*
-
-
-___________________________________________________________________________________________________________________________
-
-
-
-
 
 **<ins>Provided AWS & Docker credentials for Jenkins:</ins>**
 

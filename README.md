@@ -174,6 +174,8 @@ Kubernetes is an open-source container orchestration platform that automates the
 
 The Kubernetes objects that are included in the EKS Cluster are an ingress, 2 services, and 2 deployments for each node and a load balancer:
 
+- The [ingressclass.yaml](/KUBE_MANIFEST/Ingressclass.yaml) provisions the Application Load Balancer. 
+
 - The [ingress.yaml](/KUBE_MANIFEST/ingress.yaml) defines the ingress that received traffic from the load balancer and allows it into the node. 
 
 - The [service.yaml](/KUBE_MANIFEST/service.yaml) includes the services for both the backend and frontend. Each service forwards traffic to the respective frontend and backend containers defined in the deployment.yaml:
@@ -254,14 +256,15 @@ else{
 ![Error](Images/deployment_error.png)
 
 _______________________________________________________________________
+
 # Budget
 
 ![Budget](Images/Budget.png)
 _________________________________________________________
 
-
 # Conclusion
 
+The deployment of the application encountered impediments attributable to the unavailability of requisite database endpoints and credentials. This limitation hindered our ability to successfully deploy the application in EKS cluster. The infrastructure is available to deploy another application.  The application was able to deploy in the Docker environment.  
 
 ________________________________________________________________________________________________
 
@@ -271,9 +274,4 @@ Fault tolerance: Multiple AZ’s
 Resiliency: Private subnets
 Scalability: Ansible
 High throughput: Route 53
-
-
-
-
-
 

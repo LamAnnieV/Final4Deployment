@@ -27,12 +27,6 @@ _____________________________________________________________
 ![infrastructure](Images/FinalDiagram.png)
 _____________________________________________________________
 
-### <ins>Deployment Strategy:</ins>
-
-Rolling Deployment strategy
-Ansible makes it easier for us to update any instance without having to go into Terraform. The Ansible tool helps us reduce the risk of configuration drift
-________________________________________________________________________
-
 # Git/GitHub
 
 Git is a distributed version control system designed to track changes in source code during software development. It allows multiple developers to collaborate on projects seamlessly by managing code repositories efficiently. GitHub, on the other hand, is a web-based platform that provides Git repository hosting along with collaboration features. GitHub serves as a centralized hub for developers to store, share, and contribute to Git repositories. It includes features like pull requests, issue tracking, and wikis, enhancing collaboration and making it a widely adopted platform for open-source and private projects alike. Together, Git and GitHub empower developers with a powerful version control system and a collaborative platform for effective and organized software development workflows.
@@ -58,7 +52,11 @@ Merge====
 
 _______________________________________________________________________________________________________
 
-# Ansible 
+# Deployment Strategy:
+
+Rolling Deployment strategy - Ansible makes it easier for us to update any instance without having to go into Terraform. The Ansible tool helps us reduce the risk of configuration drift
+
+## Ansible 
 Ansible is a versatile automation tool that streamlines complex IT processes, ideal for managing system configurations, deploying applications, and orchestrating workflows across various environments. Its simplicity, stemming from an agentless setup and easy-to-understand YAML-based playbooks, makes it accessible for both small and large-scale operations. This scalability and flexibility make Ansible a key asset in DevOps, boosting efficiency and ensuring consistent delivery of IT services.
 
 - Install SSH: Install OpenSSH server on your machine. `sudo apt install openssh-server`

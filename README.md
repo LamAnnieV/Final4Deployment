@@ -192,36 +192,21 @@ ________________________________________________________________________________
 
 ![Pipeline](Images/Jenkins_Pipeline.png)
 
+### Init Terraform
 
+To provision the application infrastructure
 
-EKS Jenkinsfile:
+### Build Images
 
-**<ins>Configured *staging environment* with [Jenkins infrastructure](main.tf) and CI/CD pipeline stages with [Jenkinsfiles](Jenkinsfile):</ins>**
+Uses docker-compose build to build the frontend and the backend images from dockerfiles
 
-**[Jenkins](jenkins-deadsnakes2.sh) manager server:** Installed with Jenkins. This main server sends the necessary build scripts and files to each agent/virtual machine reducing resource contention and configuration drift.
+### Login and Push
 
-**<ins>Stage: Environment variables:</ins>**
+Login to DockerHub and pushes the images to DockerHub
 
-*DOCKERHUB_CREDENTIALS** *(to connect Jenkins pipeline to our docker image storage tool to create/run containers created for deployment)
+### Deploy to EKS
 
-*AWS_EKS_CLUSTER_NAME** (so that our application could deploy to our pre-existing cluster environment in our private network)
-        
-*AWS_EKS_REGION** (to create cluster in us-east-1 region)*
-        
-*KUBE_MANIFESTS_DIR** (to direct EKS commands to deploy using the yaml files in this directory)*
-
-**<ins>Stages: *Build backend* & *Build frontend*:</ins>**
-
-**[Docker](dockeragent2.sh) agent server:** The docker agent receives the job execution request from the main server when our pipeline initiates when the Docker build stages are triggered through Jenkins when we select “Build Now”: 
-
- *Docker build* to create images described within our Docker files for the application’s front-end and back-end.
-
- *Docker login* to provide access to our Docker Hub account which is instrumental in connecting our application image to our Kubernetes pods/containers.
-
- *Docker push* to push the latest image version back to Docker Hub so that our changes to our main repo are reflected correctly in our application code.
-
-**<ins>Stage: Deploy to EKS:</ins>**
-
+Provisions the EKS infrastructure and deploys the application
 
 ______________________________________________________________________________________________________
 
@@ -237,16 +222,12 @@ ________________________________________________________________________________
 
 ```aws eks create-addon --cluster-name * pre-existing cluster-name* --addon-name amazon-cloudwatch-observability```
 
-Purpose
-
-
-Cloudwatch log groups:
 ![cw](Images/Monitoring.png)
 
-## <ins>Issues</ins>
-
+## Issues
 
 503 errors when trying to deploy the application within EKS and ECS clusters. 
+
 Connecting to an application load balancer
 
 ![Error](Images/DBnotSupported.png)

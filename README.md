@@ -188,7 +188,9 @@ The Kubernetes objects that are included in the EKS Cluster are an ingress, 2 se
 
 _________________________________________________________________________________________________________
 
+## CI/CD Pipeline
 
+![Pipeline](Images/Jenkins_Pipeline.png)
 
 
 
@@ -220,61 +222,10 @@ EKS Jenkinsfile:
 
 **<ins>Stage: Deploy to EKS:</ins>**
 
-**<ins>Manually configured Cluster and node groups from [EKS](eks-jre.sh) agent server:</ins>** 
-
-•	The EKS agent server triggers the necessary job to *Deploy* when triggered in the Jenkins pipeline. It also acts as the bastion host and as a gateway or entry point into our private network where our EKS cluster = *eksctl create cluster DepCluster9 --vpc-private-subnets=”pri_subnet,pri_subnet”  --vpc-public-subnets=”pub_subnet,pub_subnet” --without-nodegroup* and node groups were provisioned separately in order to customize out node groups =  * eksctl create nodegroup --cluster DepCluster9 --node-type t2.medium --nodes 2*.
-
-•	I also manually configured the ALB controller for traffic management and the CloudWatch agent on the server for monitoring (explained further below).
-
-**<ins>Stage: Slack notification:</ins>**
-
-*<ins>Found documentation on the Slack API and utilizing a webhook URL to broadcast messages to the team on our designated Slack channel:</ins>*
-
-•	For Slack access on Jenkins: Configured credentials as a “secret text” like how we enter our AWS keys. Defined and set variables for slack webhook URL within Jenkinsfile to avoid directly hard coding and leaking our URL onto GitHub again. 
-
-
-______________________________________________________________
-
-ECS Jenkinsfile:
-
-_______________________________________________________
-
-
-
-
-
-
-**<ins>Access to Application:</ins>**
-
-* Provided permission to my AWS account to interact with our cluster through *OpenID*
-
-* Added new tags: the key being: “kubernetes.io/role/elb” and the value: “1” so that  Kubernetes could identify the suitability of our public subnets to host our application load balancer. 
-
-* Downloaded iampolicy.json file in our EKS cluster to define what is allowable and what isn’t when accessing our application. 
-
-* Downloaded “AWSLoadBalancerControllerIAMPolicy to give permission to my cluster to use my ALB controller.
-
-* Create a service account that is used to control access to our ingress controller to interact with our ALB in our EKS cluster.
-
-* Created certificate manager to secure the traffic from clients and associated ingress (incoming traffic) controller with the associated domain name that will be created to access our application through the load balancer.
-
-* List of polocies under the AWSLoadBalancerControllerRole on our worker nodes (2 instances configured to spin back up if ever terminated:
-![policies](Images/iamroles.png)
-
- ______________________________________________________________________________________________________
-**<ins> Configured ALB controller:</ins>**
-
-•	Downloaded v2_4_5_full.yaml file from GitHub: 
-```wget https://github.com/kubernetes-sigs/aws-load-balancer-controller/releases/download/v2.4.5/v2_4_5_full.yaml``` which acts as our *IngressClass.yaml* file to define the ingress controller we’re creating to handle the ALB controller resource to balance traffic load. *changed cluster name to our EKS cluster*
-
-•	Configure the Kubernetes ingressclass.yaml file to our cluster by running: ```kubectl apply -f v2_4_5_full.yaml```
-
-•	Lasty, I ran: ```kubectl apply -k "github.com/aws/eks-charts/stable/aws-load-balancer-controller/crds"``` to apply Kubernetes resources that we download from an ingressclass.yaml file with pre-configured resource definitions so that AWS can manage the resources necessary to run the ALB efficiently.
-
-![cw](Images/load_balancer.png)</ins>
 
 ______________________________________________________________________________________________________
-**<ins>Installed cloudwatch agent:</ins>** 
+
+## Cloudwatch agent
 
 *<ins>Found documentation for easy installation on AWS:</ins>*
 

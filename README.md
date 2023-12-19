@@ -22,17 +22,21 @@ _________________________________________________________________
 
 _____________________________________________________________
 
+### <ins>Infrastructure Diagram:</ins>
+
+![infrastructure](Images/FinalDiagram.png)
+_____________________________________________________________
+
 ### <ins>Deployment Strategy:</ins>
 
 Rolling Deployment strategy
 Ansible makes it easier for us to update any instance without having to go into Terraform. The Ansible tool helps us reduce the risk of configuration drift
 ________________________________________________________________________
 
-### <ins>Deployment Steps:</ins>
-
-__________________________________________________________
-
 # Git/GitHub
+
+Git is a distributed version control system designed to track changes in source code during software development. It allows multiple developers to collaborate on projects seamlessly by managing code repositories efficiently. GitHub, on the other hand, is a web-based platform that provides Git repository hosting along with collaboration features. GitHub serves as a centralized hub for developers to store, share, and contribute to Git repositories. It includes features like pull requests, issue tracking, and wikis, enhancing collaboration and making it a widely adopted platform for open-source and private projects alike. Together, Git and GitHub empower developers with a powerful version control system and a collaborative platform for effective and organized software development workflows.
+
 Branch
 Merge====
 
@@ -53,11 +57,6 @@ Merge====
 * *git push* - push changes back to remote GitHub repo
 
 _______________________________________________________________________________________________________
-
-### <ins>Infrastructure Diagram:</ins>
-
-![infrastructure](Images/FinalDiagram.png)
-_____________________________________________________________
 
 # Ansible 
 Ansible is a versatile automation tool that streamlines complex IT processes, ideal for managing system configurations, deploying applications, and orchestrating workflows across various environments. Its simplicity, stemming from an agentless setup and easy-to-understand YAML-based playbooks, makes it accessible for both small and large-scale operations. This scalability and flexibility make Ansible a key asset in DevOps, boosting efficiency and ensuring consistent delivery of IT services.
@@ -85,24 +84,30 @@ Create playbook with .yml file run using ‘ansible-playbook --ask-become-pass -
 
 _____________________________________________________________
 
-Testing 
+# Docker
 
-Dockerfiles:</ins>**
+Docker is an open-source platform that utilizes containerization to package and distribute applications along with their dependencies in a consistent and portable manner. It enables developers to create, deploy, and run applications seamlessly across different environments. A Dockerfile, on the other hand, is a script that defines the configuration and steps required to build a Docker container image. This text file specifies the base image, sets up the environment, and defines the series of commands to be executed, resulting in a reproducible and automated process for building Docker images. Together, Docker and Dockerfiles streamline the development and deployment workflow, making it easier to create, share, and deploy applications in isolated and self-contained environments.
 
-**</ins>The [Dockerfile](src/Web/Dockerfile)</ins> under Web files contain the frontend image:**
+## The [Dockerfile](src/Web/Dockerfile) under Web files contain the frontend image:
 
 •	The image contains the dependencies for the default Kestel web server that comes within the ASP.Net Core application code.
 
-______________________________________________________________________________________________________
-**<ins>The [Dockerfile](src/PublicApi/Dockerfile)</ins> under API files contain the backend image:**
+## The [Dockerfile](src/PublicApi/Dockerfile) under API files contain the backend image:
 
 •	The image contains an ASP.Net Core REST API and its pip dependencies. 
 
-_________________________________________________________________________________________________________________
-**<ins>Jenkins infrastructure [file](jenkinsTerraform/):**
+# Terraform
+
+Terraform is an open-source Infrastructure as Code (IaC) tool developed by HashiCorp, designed to simplify and automate the provisioning and management of infrastructure across various cloud providers and platforms. Its power lies in its declarative configuration language, which allows users to express the desired state of their infrastructure efficiently. Terraform's multi-cloud support, modular design, state management, and execution plans empower users to create, modify, and maintain complex infrastructure with consistency and reliability. By treating infrastructure as code, Terraform enhances collaboration, ensures version control, and facilitates scalable and automated deployment processes, making it an invaluable tool for modern IT and DevOps teams.
+
+In this project, terraform was used to provision the Jenkins, the Application, and the Kubernetes Infrastructure
+
+# Jenkins
 
 Jenkins is used to automate the Build, Test, and Deploy the Banking Application. To use Jenkins in a new EC2, all the proper installs to use Jenkins and to read the programming language that the application is written in need to be installed. In this case, they are Jenkins, Java, and Jenkins' additional plugin "Pipeline Keep Running Step", which is manually installed through the GUI interface.
-        
+
+## Jenkins infrastructure [file](jenkinsTerraform/)
+
 •	1 Subnet with one instance for the Jenkins Manager
 
 •	1 Subnet with three instances, that can be detached from the igw and attached to the nat gateway to make it private
@@ -112,18 +117,17 @@ Jenkins is used to automate the Build, Test, and Deploy the Banking Application.
         •	1 instance for Jenkins agent, where [Terraform](jenkinsTerraform/terraform.sh) is installed to create the application infrastructure
         
         •	1 instance for Jenkins agent, where [kubectl](jenkinsTerraform/eks-jre.sh) is installed to create the Kubernetes infrastructure and deploy the application to EKS
-        
-**<ins>Application infrastructure [files](initTerraform/):**
 
-Terraform is an open-source Infrastructure as Code (IaC) tool, designed to simplify and automate the provisioning and management of infrastructure across various cloud providers and platforms. Its power lies in its declarative configuration language, which allows users to express the desired state of their infrastructure efficiently. Terraform's multi-cloud support, modular design, state management, and execution plans empower users to create, modify, and maintain complex infrastructure with consistency and reliability. By treating infrastructure as code, Terraform enhances collaboration, ensures version control, and facilitates scalable and automated deployment processes, making it an invaluable tool for modern IT and DevOps teams.
+        
+# Application infrastructure [files](initTerraform/):
 
 •	1 VPC *(avoids any network conflicts, flexible network design, & isolates EKS cluster from other resources in AWS account)*
 
-•	3 Availability Zones
+•	3 Availability Zones - An application is deployed in more than one availability zone to enhance its availability and fault tolerance by distributing its components across multiple geographically isolated data centers, ensuring continued operation in the event of a single zone failure.
 
-•	1 Private Subnet and 1 Public Subnet in each Availability Zones
+•	1 Private Subnet and 1 Public Subnet in each Availability Zones - An application is deployed in a private subnet to enhance security by restricting direct internet access, limiting the attack surface, and requiring traffic to pass through controlled entry points like a load balancer or a bastion host for improved network isolation.
 
-**<ins>Kubernetes  infrastructure [files](KUBE_MANIFEST/):**
+# Kubernetes  infrastructure [files](KUBE_MANIFEST/):
 
 Kubernetes is an open-source container orchestration platform that automates the deployment, scaling, and management of containerized applications. Its power lies in providing a robust and standardized framework for container orchestration, allowing users to efficiently manage and scale containerized workloads across a cluster of machines. Kubernetes abstracts the complexity of container deployment, load balancing, and resource allocation, offering features like automatic scaling, rolling updates, and self-healing. This enables organizations to achieve high availability, resilience, and scalability for their applications, fostering a cloud-native approach to development and operations. Kubernetes has become a cornerstone in modern containerized application architectures, providing a consistent and powerful platform for deploying and managing distributed systems.
 
@@ -149,10 +153,8 @@ Kubernetes is an open-source container orchestration platform that automates the
         
 •	In one of the Public Subnets:  
 
-        •	Application Load Balancer
+        •	Application Load Balancer -to evenly distribute incoming network traffic across resources to optimize resource utilization, improve application availability, and ensure efficient handling of requests.
         
-•	1 Private Subnet and 1 Public Subnet in each Availability Zones
-
 
 **<ins>Kubernetes manifest:</ins>**
 

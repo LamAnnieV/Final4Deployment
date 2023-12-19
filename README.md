@@ -65,17 +65,17 @@ Ansible is a versatile automation tool that streamlines complex IT processes, id
 ssh-copy-id -i ~/.ssh/ansible.pub your-ip`
 - Remote Login: Use the specific key to log into the remote host. `ssh -i ~/.ssh/ansible host-ip`
 
-## Ansible Configuration File (.cfg)
+### Ansible Configuration File (.cfg)
 Create a configuration file for Ansible settings:
 
 - [Ansible Config File ](ansible.cfg)
 
-## Inventory File Setup
+### Inventory File Setup
 Define your managed hosts in the inventory file:
 
 - [Inventory](Inventory)
 
-## Playbook File
+### Playbook File
 Create playbook with .yml file run using ‘ansible-playbook --ask-become-pass -vvv .yml’:
 
 - [Playbook](install_.yml)

@@ -104,7 +104,7 @@ In this project, terraform was used to provision the Jenkins, the Application, a
 
 Jenkins is used to automate the Build, Test, and Deploy the Banking Application. To use Jenkins in a new EC2, all the proper installs to use Jenkins and to read the programming language that the application is written in need to be installed. In this case, they are Jenkins, Java, and Jenkins' additional plugin "Pipeline Keep Running Step", which is manually installed through the GUI interface.
 
-## Jenkins infrastructure [(file)](jenkinsTerraform/)
+## Jenkins infrastructure [(files)](jenkinsTerraform/)
 
 •	1 Subnet with one instance for the Jenkins Manager
 
@@ -117,7 +117,7 @@ Jenkins is used to automate the Build, Test, and Deploy the Banking Application.
         •	1 instance for Jenkins agent, where [kubectl](jenkinsTerraform/eks-jre.sh) is installed to create the Kubernetes infrastructure and deploy the application to EKS
 
         
-# Application infrastructure [files](initTerraform/):
+# Application infrastructure [(files)](initTerraform/):
 
 •	1 VPC *(avoids any network conflicts, flexible network design, & isolates EKS cluster from other resources in AWS account)*
 
@@ -125,7 +125,7 @@ Jenkins is used to automate the Build, Test, and Deploy the Banking Application.
 
 •	1 Private Subnet and 1 Public Subnet in each Availability Zones - An application is deployed in a private subnet to enhance security by restricting direct internet access, limiting the attack surface, and requiring traffic to pass through controlled entry points like a load balancer or a bastion host for improved network isolation.
 
-# Kubernetes  infrastructure [files](KUBE_MANIFEST/):
+# Kubernetes  infrastructure [(files)](KUBE_MANIFEST/):
 
 Kubernetes is an open-source container orchestration platform that automates the deployment, scaling, and management of containerized applications. Its power lies in providing a robust and standardized framework for container orchestration, allowing users to efficiently manage and scale containerized workloads across a cluster of machines. Kubernetes abstracts the complexity of container deployment, load balancing, and resource allocation, offering features like automatic scaling, rolling updates, and self-healing. This enables organizations to achieve high availability, resilience, and scalability for their applications, fostering a cloud-native approach to development and operations. Kubernetes has become a cornerstone in modern containerized application architectures, providing a consistent and powerful platform for deploying and managing distributed systems.
 
@@ -174,7 +174,7 @@ Kubernetes is an open-source container orchestration platform that automates the
 - The frontend image is configured to point to the backend service ``` "proxy": "http://d9-backend-service-nodeport:8000" ```
 
 _________________________________________________________________________________________________________
-**<ins>ECS  infrastructure [files](ecsTerraform/):**
+**<ins>ECS  infrastructure [(files)](ecsTerraform/):**
 
 •	1 VPC *(avoids any network conflicts, flexible network design, & isolates EKS cluster from other resources in AWS account)*
 

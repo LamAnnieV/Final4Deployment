@@ -11,12 +11,8 @@
 _______________________________________________________
 ## <ins>Purpose:</ins>
 
+Deploy a ecommerce application.  Our deployment journey progressed, we utilized docker-compose, EKS, and ECS.
 _________________________________________________________________
-
-## <ins>Description</ins>
-
-As our deployment journey progressed, we utilized docker-compose, EKS, and ECS. 
-_____________________________________________________________
 
 ## <ins>ASP.Net Core Application:</ins>
 
@@ -30,8 +26,6 @@ _____________________________________________________________
 
 Rolling Deployment strategy
 Ansible makes it easier for us to update any instance without having to go into Terraform. The Ansible tool helps us reduce the risk of configuration drift
-
-
 ________________________________________________________________________
 
 ### <ins>Deployment Steps:</ins>
@@ -91,8 +85,23 @@ Create playbook with .yml file run using ‘ansible-playbook --ask-become-pass -
 
 _____________________________________________________________
 
+Testing 
+
+Dockerfiles:</ins>**
+
+**</ins>The [Dockerfile](src/Web/Dockerfile)</ins> under Web files contain the frontend image:**
+
+•	The image contains the dependencies for the default Kestel web server that comes within the ASP.Net Core application code.
+
+______________________________________________________________________________________________________
+**<ins>The [Dockerfile](src/PublicApi/Dockerfile)</ins> under API files contain the backend image:**
+
+•	The image contains an ASP.Net Core REST API and its pip dependencies. 
+
+_________________________________________________________________________________________________________________
 **<ins>Jenkins infrastructure [file](jenkinsTerraform/):**
 
+Jenkins is used to automate the Build, Test, and Deploy the Banking Application. To use Jenkins in a new EC2, all the proper installs to use Jenkins and to read the programming language that the application is written in need to be installed. In this case, they are Jenkins, Java, and Jenkins' additional plugin "Pipeline Keep Running Step", which is manually installed through the GUI interface.
         
 •	1 Subnet with one instance for the Jenkins Manager
 
@@ -106,6 +115,8 @@ _____________________________________________________________
         
 **<ins>Application infrastructure [files](initTerraform/):**
 
+Terraform is an open-source Infrastructure as Code (IaC) tool, designed to simplify and automate the provisioning and management of infrastructure across various cloud providers and platforms. Its power lies in its declarative configuration language, which allows users to express the desired state of their infrastructure efficiently. Terraform's multi-cloud support, modular design, state management, and execution plans empower users to create, modify, and maintain complex infrastructure with consistency and reliability. By treating infrastructure as code, Terraform enhances collaboration, ensures version control, and facilitates scalable and automated deployment processes, making it an invaluable tool for modern IT and DevOps teams.
+
 •	1 VPC *(avoids any network conflicts, flexible network design, & isolates EKS cluster from other resources in AWS account)*
 
 •	3 Availability Zones
@@ -113,6 +124,8 @@ _____________________________________________________________
 •	1 Private Subnet and 1 Public Subnet in each Availability Zones
 
 **<ins>Kubernetes  infrastructure [files](KUBE_MANIFEST/):**
+
+Kubernetes is an open-source container orchestration platform that automates the deployment, scaling, and management of containerized applications. Its power lies in providing a robust and standardized framework for container orchestration, allowing users to efficiently manage and scale containerized workloads across a cluster of machines. Kubernetes abstracts the complexity of container deployment, load balancing, and resource allocation, offering features like automatic scaling, rolling updates, and self-healing. This enables organizations to achieve high availability, resilience, and scalability for their applications, fostering a cloud-native approach to development and operations. Kubernetes has become a cornerstone in modern containerized application architectures, providing a consistent and powerful platform for deploying and managing distributed systems.
 
 •	1 EKS Cluster
 
@@ -141,6 +154,26 @@ _____________________________________________________________
 •	1 Private Subnet and 1 Public Subnet in each Availability Zones
 
 
+**<ins>Kubernetes manifest:</ins>**
+
+<ins>The Kubernetes objects that are included in the EKS Cluster are an ingress, 2 services, and 2 deployments for each node:</ins>
+
+•	The [ingress.yaml](/KUBE_MANIFEST/ingress.yaml) defines the ingress that received traffic from the load balancer and allows it into the node. 
+
+<ins>The [service.yaml](/KUBE_MANIFEST/service.yaml) includes the services for both the backend and frontend. Each service forwards traffic to the respective frontend and backend containers defined in the deployment.yaml:</ins>
+
+- The frontend service depends on the API to target the traffic from the load balancer  
+    
+
+* EKS takes care of many services necessary for our application to work including our target zones so that our ALB gets automatically directed to the ones opened in our services:
+
+![target](Images/targetgroup.png)
+    
+<ins>The [deployment.yaml](/KUBE_MANIFEST/deployment.yaml) defines the configurations for the containers based on the backend and frontend images:</ins>
+
+- The frontend image is configured to point to the backend service ``` "proxy": "http://d9-backend-service-nodeport:8000" ```
+
+_________________________________________________________________________________________________________
 **<ins>ECS  infrastructure [files](ecsTerraform/):**
 
 •	1 VPC *(avoids any network conflicts, flexible network design, & isolates EKS cluster from other resources in AWS account)*
@@ -149,22 +182,7 @@ _____________________________________________________________
 ___________________________________________________________________________________________________________________________
 
 
-Dockerfiles:</ins>**
 
-**</ins>The [Dockerfile](src/Web/Dockerfile)</ins> under Web files contain the frontend image:**
-
-•	The image contains the dependencies for the default kestel web server that comes within the ASP.Net Core application code.
-
-______________________________________________________________________________________________________
-**<ins>The [Dockerfile](src/PublicApi/Dockerfile)</ins> under API files contain the backend image:**
-
-•	The image contains an ASP.Net Core REST API and its pip dependencies. 
-
-added  the stress command to stress test our server 
-
-
-
-_________________________________________________________________________________________________________________
 
 
 **<ins>Provided AWS & Docker credentials for Jenkins:</ins>**
@@ -185,14 +203,6 @@ Jenkins needs our AWS credentials to create our infrastructure through the terra
 
 _____________________________________
 
-
-Docker-compose Jenkinsfile:
-
-___________________________________________________________
-
-ECS Jenkinsfile:
-
-_______________________________________________________
 
 
 
@@ -239,28 +249,12 @@ EKS Jenkinsfile:
 
 ______________________________________________________________
 
+ECS Jenkinsfile:
+
+_______________________________________________________
 
 
-**<ins>Kubernetes manifest:</ins>**
 
-<ins>The Kubernetes objects that are included in the EKS Cluster are an ingress, 2 services, and 2 deployments for each node:</ins>
-
-•	The [ingress.yaml](/KUBE_MANIFEST/ingress.yaml) defines the ingress that received traffic from the load balancer and allows it into the node. 
-
-<ins>The [service.yaml](/KUBE_MANIFEST/service.yaml) includes the services for both the backend and frontend. Each service forwards traffic to the respective frontend and backend containers defined in the deployment.yaml:</ins>
-
-- The frontend service depends on the API to target the traffic from the load balancer  
-    
-
-* EKS takes care of many services necessary for our application to work including our target zones so that our ALB gets automatically directed to the ones opened in our services:
-
-![target](Images/targetgroup.png)
-    
-<ins>The [deployment.yaml](/KUBE_MANIFEST/deployment.yaml) defines the configurations for the containers based on the backend and frontend images:</ins>
-
-- The frontend image is configured to point to the backend service ``` "proxy": "http://d9-backend-service-nodeport:8000" ```
-
-_________________________________________________________________________________________________________
 
 
 

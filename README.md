@@ -104,7 +104,7 @@ In this project, terraform was used to provision the Jenkins, the Application, a
 
 Jenkins is used to automate the Build, Test, and Deploy the Banking Application. To use Jenkins in a new EC2, all the proper installs to use Jenkins and to read the programming language that the application is written in need to be installed. In this case, they are Jenkins, Java, and Jenkins' additional plugin "Pipeline Keep Running Step", which is manually installed through the GUI interface.
 
-## Jenkins infrastructure [file](jenkinsTerraform/)
+## Jenkins infrastructure [(file)](jenkinsTerraform/)
 
 •	1 Subnet with one instance for the Jenkins Manager
 

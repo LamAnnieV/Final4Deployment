@@ -119,9 +119,6 @@ Jenkins needs our AWS credentials to create our infrastructure through the terra
 •	Provisioned the agent nodes: The nodes for our cluster are provisioned in the private subnets as a measure of security. Neither the frontend or backend pods are directly accessible. The frontend ingress receives traffic only through the load balancer. The frontend containers access the backend through the backend service. 
 
 
-_____________________________________
-
-
 ## Jenkins infrastructure [(files)](jenkinsTerraform/)
 
 •	1 Subnet with one instance for the Jenkins Manager
@@ -171,6 +168,7 @@ Kubernetes is an open-source container orchestration platform that automates the
 
         •	Application Load Balancer -to evenly distribute incoming network traffic across resources to optimize resource utilization, improve application availability, and ensure efficient handling of requests.
         
+## [Instructions](https://github.com/LamAnnieV/K8s_configuration.git) to configure the EKS Cluster and Application Load Balancer
 
 ## Kubernetes manifest [(files)](KUBE_MANIFEST/):
 
@@ -188,43 +186,44 @@ The Kubernetes objects that are included in the EKS Cluster are an ingress, 2 se
 
 _________________________________________________________________________________________________________
 
-## CI/CD Pipeline [(Jenkinsfile)](Jenkinsfile)
+# CI/CD Pipeline [(Jenkinsfile)](Jenkinsfile)
 
 ![Pipeline](Images/Jenkins_Pipeline.png)
 
-### Init Terraform
+## Init Terraform
 
 To provision the application infrastructure
 
-### Build Images
+## Build Images
 
 Uses docker-compose build to build the frontend and the backend images from dockerfiles
 
-### Login and Push
+## Login and Push
 
 Login to DockerHub and pushes the images to DockerHub
 
-### Deploy to EKS
+## Deploy to EKS
 
 Provisions the EKS infrastructure and deploys the application
 
 ______________________________________________________________________________________________________
 
-## Cloudwatch agent
+# Cloudwatch agent
 
-*<ins>Found documentation for easy installation on AWS:</ins>*
+Documentation for Cloudwatch agent on AWS
 
 •	The following command attaches a role policy to my cluster by updating the policies under my IAM role to include the *CloudWatchAgentServerPolicy*:
   
 ```aws iam attach-role-policy \--role-name *name of IAM policy on worker-nodes* \ --policy-arn arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy```
 
-* <ins>The following command installs the necessary add-on for CloudWatch monitoring to observe and function properly:</ins>*
+•	The following command installs the necessary add-on for CloudWatch monitoring to observe and function properly:
 
 ```aws eks create-addon --cluster-name * pre-existing cluster-name* --addon-name amazon-cloudwatch-observability```
 
 ![cw](Images/Monitoring.png)
 
-## Issues
+
+# Issues
 
 503 errors when trying to deploy the application within EKS and ECS clusters. 
 
@@ -235,23 +234,23 @@ Connecting to an application load balancer
 ![Error](Images/deployment_error.png)
 
 _______________________________________________________________________
-## <ins>Budget</ins>
+# Budget
 
 ![Budget](Images/Budget.png)
 _________________________________________________________
 
 
-**<ins>Conclusion</ins>**
+# Conclusion
 
 
 ________________________________________________________________________________________________
 
-**<ins>Optimization</ins>**
+# Optimization
 
 Fault tolerance: Multiple AZ’s
 Resiliency: Private subnets
 Scalability: Ansible
-High throughput: Route 53, 
+High throughput: Route 53
 
 
 

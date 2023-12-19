@@ -104,6 +104,24 @@ In this project, terraform was used to provision the Jenkins, the Application, a
 
 Jenkins is used to automate the Build, Test, and Deploy the Banking Application. To use Jenkins in a new EC2, all the proper installs to use Jenkins and to read the programming language that the application is written in need to be installed. In this case, they are Jenkins, Java, and Jenkins' additional plugin "Pipeline Keep Running Step", which is manually installed through the GUI interface.
 
+## Credentials for Jenkins:
+
+### For AWS:
+
+•	The ```Deploy to EKS``` stage in the Jenkins pipeline needs AWS credentials to execute the ```kubectl apply``` that creates the Kubernetes objects in our EKS cluster. The AWS access key and secret keys are stored as secret text in the Jenkins credentials utility. The credentials are then called by the Jenkinsfile and passed to the ```kubectl``` command in the Jenkinsfile.
+
+Jenkins needs our AWS credentials to create our infrastructure through the terraform agent
+
+### For Docker:
+
+•	The Jenkins pipeline needs credentials from the Docker Hub where the images for the frontend and backend are publicly stored so other developers can access it in the future. The Jenkinsfile build stages use the Docker Hub username and token to login to Docker Hub and push the built image to the repository.
+
+•	Provisioned the agent nodes: The nodes for our cluster are provisioned in the private subnets as a measure of security. Neither the frontend or backend pods are directly accessible. The frontend ingress receives traffic only through the load balancer. The frontend containers access the backend through the backend service. 
+
+
+_____________________________________
+
+
 ## Jenkins infrastructure [(files)](jenkinsTerraform/)
 
 •	1 Subnet with one instance for the Jenkins Manager
@@ -170,23 +188,6 @@ The Kubernetes objects that are included in the EKS Cluster are an ingress, 2 se
 
 _________________________________________________________________________________________________________
 
-**<ins>Provided AWS & Docker credentials for Jenkins:</ins>**
-
-**For AWS:**
-
-•	The ```Deploy to EKS``` stage in the Jenkins pipeline needs AWS credentials to execute the ```kubectl apply``` that creates the Kubernetes objects in our EKS cluster. The AWS access key and secret keys are stored as secret text in the Jenkins credentials utility. The credentials are then called by the Jenkinsfile and passed to the ```kubectl``` command in the Jenkinsfile.
-
-Jenkins needs our AWS credentials to create our infrastructure through the terraform agent
-
-
-**For Docker:**
-
-•	The Jenkins pipeline needs credentials from the Docker Hub where the images for the frontend and backend are publicly stored so other developers can access it in the future. The Jenkinsfile build stages use the Docker Hub username and token to login to Docker Hub and push the built image to the repository.
-
-•	Provisioned the agent nodes: The nodes for our cluster are provisioned in the private subnets as a measure of security. Neither the frontend or backend pods are directly accessible. The frontend ingress receives traffic only through the load balancer. The frontend containers access the backend through the backend service. 
-
-
-_____________________________________
 
 
 

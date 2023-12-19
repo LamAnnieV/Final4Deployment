@@ -225,10 +225,30 @@ Documentation for Cloudwatch agent on AWS
 
 # Issues
 
-503 errors when trying to deploy the application within EKS and ECS clusters. 
+There were issues connected to Azure SQL database outside the Docker environment, which resulted in  503 errors when trying to deploy the application within EKS clusters. When deploying outside Docker environment, Azure key-vault, AZURE_KEY_VAULT_ENDPOINT, AZURE_SQL_CATALOG_CONNECTION_STRING_KEY and AZURE_SQL_IDENTITY_CONNECTION_STRING_KEY database credentials were required, which the application did not provide.  
 
-Connecting to an application load balancer
-
+```
+if (builder.Environment.IsDevelopment() || builder.Environment.EnvironmentName == "Docker"){
+    Configure SQL Server (local)
+    Microsoft.eShopWeb.Infrastructure.Dependencies.ConfigureServices(builder.Configuration, builder.Services);
+}
+else{
+    Configure SQL Server (prod)
+    Microsoft.eShopWeb.Infrastructure.Dependencies.ConfigureServices(builder.Configuration, builder.Services)
+    var credential = new ChainedTokenCredential(new AzureDeveloperCliCredential(), new DefaultAzureCredential());
+    builder.Configuration.AddAzureKeyVault(new Uri(builder.Configuration["AZURE_KEY_VAULT_ENDPOINT"] ?? ""), credential);
+    builder.Services.AddDbContext<CatalogContext>(c =>
+    {
+        var connectionString = builder.Configuration[builder.Configuration["AZURE_SQL_CATALOG_CONNECTION_STRING_KEY"] ?? ""];
+        c.UseSqlServer(connectionString, sqlOptions => sqlOptions.EnableRetryOnFailure());
+    });
+    builder.Services.AddDbContext<AppIdentityDbContext>(options =>
+    {
+        var connectionString = builder.Configuration[builder.Configuration["AZURE_SQL_IDENTITY_CONNECTION_STRING_KEY"] ?? ""];
+        options.UseSqlServer(connectionString, sqlOptions => sqlOptions.EnableRetryOnFailure());
+    });        
+}
+```
 ![Error](Images/DBnotSupported.png)
 
 ![Error](Images/deployment_error.png)
